@@ -119,7 +119,7 @@ public class Login extends HttpServlet {
 		Connection conn = null;
 
 		try {
-			// JBBCドライバクラスのロード
+			// JDBCドライバクラスのロード
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 
 			// Connectionの作成

@@ -53,7 +53,7 @@ public class Login extends HttpServlet {
 			dispatcher.forward(request, response);
 		} else if ("success".equals(result)) {
 			// JSPにforward
-			String view = "/WEB-INF/view/kontiwa.jsp";
+			String view = "/WEB-INF/view/hello.jsp";
 			RequestDispatcher dispatcher = request.getRequestDispatcher(view);
 
 			dispatcher.forward(request, response);
@@ -88,6 +88,7 @@ public class Login extends HttpServlet {
 			ResultSet rset = stmt.executeQuery(
 					"select USER_NAME from T_USER where USER_ID = '" + userid + "' and PASSWORD = '" + password + "'");
 
+			System.out.println("select USER_NAME from T_USER where USER_ID = '" + userid + "' and PASSWORD = '" + password + "'");
 			// 取得したデータを出力する
 			while (rset.next()) {
 				name = rset.getString("USER_NAME");

@@ -8,6 +8,7 @@
 </head>
 <body>
 	こんにちは、<%=request.getAttribute("userName")%>
-	さん！
+	さん！<BR>
+	最終ログイン日時は <%=request.getAttribute("loginTime")%> です。
 </body>
 </html>

@@ -36,6 +36,8 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 		// リクエストから名前を取得
 		String name = (String) request.getAttribute("userName");
+		// リクエストからログイン日時を取得
+		String loginTime = (String) request.getAttribute("loginTime");
 		// リクエストから処理結果を取得
 		String result = (String) request.getAttribute("result");
 
@@ -74,6 +76,7 @@ public class Login extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String name = "";
+		String loginTime = "";
 		// 文字コードの指定
 		request.setCharacterEncoding("utf-8");
 		// formから値を取得
@@ -86,12 +89,13 @@ public class Login extends HttpServlet {
 			java.sql.Statement stmt = conn.createStatement();
 			// 問い合わせの実行
 			ResultSet rset = stmt.executeQuery(
-					"select USER_NAME from T_USER where USER_ID = '" + userid + "' and PASSWORD = '" + password + "'");
+					"select USER_NAME, LOGIN_TIME from T_USER where USER_ID = '" + userid + "' and PASSWORD = '" + password + "'");
 
-			System.out.println("select USER_NAME from T_USER where USER_ID = '" + userid + "' and PASSWORD = '" + password + "'");
+			System.out.println("select USER_NAME, LOGIN_TIME from T_USER where USER_ID = '" + userid + "' and PASSWORD = '" + password + "'");
 			// 取得したデータを出力する
 			while (rset.next()) {
 				name = rset.getString("USER_NAME");
+				loginTime = rset.getString("LOGIN_TIME");
 			}
 
 		} catch (Exception e) {
@@ -99,6 +103,7 @@ public class Login extends HttpServlet {
 		}
 
 		System.out.println(name);
+		System.out.println(loginTime);
 
 		// 名前が空の場合、resultにfalseを設定
 		if (name == null || "".equals(name)) {
@@ -106,6 +111,8 @@ public class Login extends HttpServlet {
 		} else {
 			// "userName"に設定。
 			request.setAttribute("userName", name);
+			// "loginTime"に設定。
+			request.setAttribute("loginTime", loginTime);
 			// resultにsuccess設定。
 			request.setAttribute("result", "success");
 		}

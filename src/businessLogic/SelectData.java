@@ -4,11 +4,11 @@ import businessEntity.dao.SelectT_USER;
 
 public class SelectData {
 
-	public String[] getTUserData(String userId, String passWoord) throws Exception {
+	public String[] getTUserData(String userId, String passWord) throws Exception {
 
 		SelectT_USER selectTUser = new SelectT_USER();
 
-		String[] tUserData = selectTUser.select_USER(userId, passWoord).get(0);
+		String[] tUserData = selectTUser.selectT_USER(userId, passWord).get(0);
 
 		return tUserData; 
 	}

@@ -1,6 +1,7 @@
 package login;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -84,29 +85,29 @@ public class Login extends HttpServlet {
 
 		try {
 			String[] tUserData = startLogin.getUserData(userId, password);
-			
+
 			name = tUserData[0];
 			loginTime = tUserData[1];
 
+			// 名前が空の場合、resultにfalseを設定
+			if (name == null || "".equals(name)) {
+				request.setAttribute("result", "false");
+			} else {
+				// "userName"に設定。
+				request.setAttribute("userName", name);
+				// "loginTime"に設定。
+				request.setAttribute("loginTime", loginTime);
+				// resultにsuccess設定。
+				request.setAttribute("result", "success");
+				// ログイン時間を更新
+				startLogin.updateLoginTime(userId, commonUtil.DateFormat.dateFormat(new Date()));
+			}
+
+			// doGetメソッドを呼び出す。
+			doGet(request, response);
 		} catch (Exception e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
-
-
-		// 名前が空の場合、resultにfalseを設定
-		if (name == null || "".equals(name)) {
-			request.setAttribute("result", "false");
-		} else {
-			// "userName"に設定。
-			request.setAttribute("userName", name);
-			// "loginTime"に設定。
-			request.setAttribute("loginTime", loginTime);
-			// resultにsuccess設定。
-			request.setAttribute("result", "success");
-		}
-
-		// doGetメソッドを呼び出す。
-		doGet(request, response);
 	}
 }

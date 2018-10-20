@@ -1,9 +1,6 @@
 package login;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import applicationLogic.StartLogin;
 
 /**
  * Servlet implementation class Login
@@ -78,30 +77,22 @@ public class Login extends HttpServlet {
 		// 文字コードの指定
 		request.setCharacterEncoding("utf-8");
 		// formから値を取得
-		String userid = request.getParameter("userid");
+		String userId = request.getParameter("userid");
 		String password = request.getParameter("password");
-		// コネクションを作成
-		Connection conn = helloDriverManeger();
-		try {
-			// Statementの作成
-			java.sql.Statement stmt = conn.createStatement();
-			// 問い合わせの実行
-			ResultSet rset = stmt.executeQuery(
-					"select USER_NAME, LOGIN_TIME from T_USER where USER_ID = '" + userid + "' and PASSWORD = '" + password + "'");
 
-			System.out.println("select USER_NAME, LOGIN_TIME from T_USER where USER_ID = '" + userid + "' and PASSWORD = '" + password + "'");
-			// 取得したデータを出力する
-			while (rset.next()) {
-				name = rset.getString("USER_NAME");
-				loginTime = rset.getString("LOGIN_TIME");
-			}
+		StartLogin startLogin = new StartLogin();
+
+		try {
+			String[] tUserData = startLogin.getUserData(userId, password);
+			
+			name = tUserData[0];
+			loginTime = tUserData[1];
 
 		} catch (Exception e) {
+			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 
-		System.out.println(name);
-		System.out.println(loginTime);
 
 		// 名前が空の場合、resultにfalseを設定
 		if (name == null || "".equals(name)) {
@@ -117,23 +108,5 @@ public class Login extends HttpServlet {
 
 		// doGetメソッドを呼び出す。
 		doGet(request, response);
-	}
-
-	@SuppressWarnings("finally")
-	private Connection helloDriverManeger() {
-
-		Connection conn = null;
-
-		try {
-			// JDBCドライバクラスのロード
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-
-			// Connectionの作成
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "CSC_USER", "CSC_USER");
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			return conn;
-		}
 	}
 }

@@ -1,4 +1,4 @@
-package pack;
+package login;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -36,8 +36,6 @@ public class Login extends HttpServlet {
 			throws ServletException, IOException {
 		// リクエストから名前を取得
 		String name = (String) request.getAttribute("userName");
-		// リクエストからログイン日時を取得
-		String loginTime = (String) request.getAttribute("loginTime");
 		// リクエストから処理結果を取得
 		String result = (String) request.getAttribute("result");
 
